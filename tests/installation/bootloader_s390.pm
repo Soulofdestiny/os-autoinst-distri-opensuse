@@ -81,8 +81,9 @@ sub get_to_yast() {
     # qboot
     my $ftp_server = get_var('OPENQA_HOSTNAME') or die;
     # TODO: find the proper repo for 'ISO'
+    # FIXME: hardcoded 'openqa.suse.de' for local tests
     my $dir_with_suse_ins = get_var('REPO_0');
-    $s3270->sequence_3270("String(\"qaboot $ftp_server $dir_with_suse_ins\")", "ENTER", "Wait(InputField)",);
+    $s3270->sequence_3270("String(\"qaboot openqa.suse.de $dir_with_suse_ins\")", "ENTER", "Wait(InputField)",);
 
     ##############################
     # edit parmfile
@@ -156,6 +157,12 @@ sub run() {
     my $exception = $@;
 
     die join("\n", '#' x 67, $exception, '#' x 67) if $exception;
+
+    # give the system a few seconds to have routes definetly up
+    sleep 15;
+
+    # activate console so we can call wait_idle later
+    my $c = select_console('iucvconn');
 
     # TODO: "hardcoded" vnc (default) right now - other installation methods have to be added
     select_console("installation");
