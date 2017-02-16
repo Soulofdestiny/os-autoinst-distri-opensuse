@@ -55,17 +55,21 @@ sub is_update_test_repo_test {
     return get_var('TEST') !~ /^mru-/ && (get_var('FLAVOR', '') =~ /-Updates$/);
 }
 
+sub is_zVM_upgrade {
+    return get_var('ZVM_UPGRADE_BASE', '');
+}
+
 sub cleanup_needles {
     remove_common_needles;
     if (get_var('VERSION', '') ne '12') {
         unregister_needle_tags("ENV-VERSION-12");
     }
 
-    if (get_var('VERSION', '') ne '12-SP1') {
+    if ((get_var('VERSION', '') ne '12-SP1') && !get_var('ZVM_UPGRADE_BASE', '12-SP1')) {
         unregister_needle_tags("ENV-VERSION-12-SP1");
     }
 
-    if (get_var('VERSION', '') ne '12-SP2') {
+    if ((get_var('VERSION', '') ne '12-SP2') && !get_var('ZVM_UPGRADE_BASE', '12-SP2')) {
         unregister_needle_tags("ENV-VERSION-12-SP2");
     }
 
