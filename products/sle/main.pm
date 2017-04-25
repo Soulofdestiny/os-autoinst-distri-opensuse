@@ -985,6 +985,23 @@ sub load_patching_tests() {
     loadtest 'installation/bootloader_ofw_sym'  if get_var('OFW');
 }
 
+sub load_hpc_tests() {
+    if (get_var('PATCH')) {
+        loadtest "update/patch_before_migration";
+    }
+    if (check_var('HPC', 'zypper')) {
+        loadtest 'hpc/enable_in_zypper';
+    }
+    else {
+        loadtest "boot/boot_to_desktop";
+        loadtest "hpc/hpc_init";
+
+        if (check_var("HPC", "repository")) {
+            loadtest "console/install_all_from_repository";
+        }
+    }
+}
+
 sub prepare_target() {
     if (get_var("BOOT_HDD_IMAGE")) {
         boot_hdd_image;
@@ -1235,37 +1252,19 @@ elsif (ssh_key_import) {
     loadtest "x11/ssh_key_verify";
 }
 elsif (get_var("HPC")) {
-    if (check_var("HPC", "support")) {
-        loadtest "hpc/barrier_init";
-        loadtest "hpc/hpc_support_server";
-    }
-    else {
-        loadtest "boot/boot_to_desktop";
-        loadtest "hpc/hpc_init";
 
-        if (check_var("HPC", "basic")) {
-            loadtest "hpc/rasdaemon";
-        }
-        if (check_var("HPC", "openhpc")) {
-            loadtest "hpc/openhpc_install";
-        }
-        if (check_var("HPC", "munge_master")) {
-            loadtest "hpc/munge_master";
-        }
-        if (check_var("HPC", "munge_slave")) {
-            loadtest "hpc/munge_slave";
-        }
-        if (check_var("HPC", "slurm_master")) {
-            loadtest "hpc/install_slurm";
-            loadtest "hpc/slurm_master";
-        }
-        if (check_var("HPC", "slurm_slave")) {
-            loadtest "hpc/install_slurm";
-            loadtest "hpc/slurm_slave";
-        }
-        if (check_var("HPC", "repository")) {
-            loadtest "console/install_all_from_repository";
-        }
+    # HPC tests which are using a pre-installed image
+    if (get_var('BOOT_HDD_IMAGE')) {
+        boot_hdd_image;
+        load_hpc_tests;
+
+    }
+    # HPC tests which are installing a SLES before
+    else {
+        load_boot_tests;
+        load_inst_tests;
+        load_reboot_tests;
+        load_hpc_tests;
     }
 }
 else {
