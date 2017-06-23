@@ -17,18 +17,42 @@ use warnings;
 use testapi;
 use lockapi;
 use utils;
+use mm_network;
+use mmapi;
 
-sub run() {
+sub run() { 
+    my $host_ip = "10.0.2.11/15";
+    wait_still_screen 10;  
+    select_console 'root-console';
+    
+    # Setup static NETWORK
+    configure_default_gateway;
+    configure_static_ip($host_ip);
+    configure_static_dns(get_host_resolv_conf());
+    
+    # check if gateway is reachable
+    assert_script_run "ping -c 1 10.0.2.2 || journalctl -b --no-pager >/dev/$serialdev";
+    
+    
+    # stop firewall, so key can be copied
+    assert_script_run "rcSuSEfirewall2 stop";
+
+    
     # set proper hostname
     assert_script_run('hostnamectl set-hostname munge-slave');
 
     zypper_call('in munge libmunge2');
-    barrier_wait('MUNGE_INSTALLED');
-    barrier_wait('MUNGE_KEY_COPY');
+
+    barrier_wait('installation_finished'); 
+    mutex_lock('key_copied');
+
     assert_script_run('systemctl enable munge.service');
     assert_script_run('systemctl start munge.service');
-    barrier_wait('MUNGE_SERVICE_START');
-    barrier_wait('TEST_END');
+    
+    barrier_wait("service_enabled");
+
+
+    wait_for_children;
 }
 
 1;
