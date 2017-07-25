@@ -4,6 +4,7 @@ use base 'basetest';
 use testapi;
 use utils;
 use bootloader_setup 'boot_local_disk';
+use File::Basename 'basename';
 use strict;
 use bootloader_setup 'tianocore_enter_menu';
 
@@ -303,6 +304,17 @@ sub wait_boot {
             # and start serial grab again
             sleep 30;
             select_console('iucvconn');
+        }
+        elsif (get_var('QA_TESTSET') && check_var('BACKEND', 'svirt')) {
+            my $svirt = select_console('svirt');
+            my $hdd_dir  = "/var/lib/openqa/share/factory/hdd";
+            my $basename = basename(get_var('HDD_1'));
+            chomp(my $hdd_path = `find $hdd_dir -name $basename | head -n1`);
+            $svirt->add_disk({file => $hdd_path, backingfile => 1, dev_id => 'a'});    # Copy disk to local storage
+            $svirt->add_pty({pty_dev => 'console', pty_dev_type => 'pty', target_type => 'sclp', target_port => '0'});
+            $svirt->add_interface({type => 'direct', source => {dev => "enccw0.0.0600", mode => 'bridge'}, target => {dev => 'macvtap' . $svirt->instance +4}});
+            $svirt->define_and_start;
+            wait_serial($login_ready, $ready_time + 100);
         }
         else {
             wait_serial($login_ready, $ready_time + 100);

@@ -90,6 +90,7 @@ sub run {
             $svirt->add_disk({file => $patched_img, dev_id => 'a'});
         }
         else {
+            # TODO you need this part for stress_test
             type_string("# copying image...\n");
             $svirt->add_disk({file => $hdd_path, backingfile => 1, dev_id => 'a'});    # Copy disk to local storage
         }
@@ -98,16 +99,20 @@ sub run {
         $svirt->add_disk({size => $size_i . "G", create => 1, dev_id => 'a'});
     }
     # need that for s390
+    # TODO you need this part for stress_test
     $svirt->add_pty({pty_dev => 'console', pty_dev_type => 'pty', target_type => 'sclp', target_port => '0'});
 
     # direct access to the tap device
     # use of $vtap temporarily
+
+    # TODO you need this part for stress_test
     $svirt->add_interface({type => 'direct', source => {dev => "enccw0.0.0600", mode => 'bridge'}, target => {dev => 'macvtap' . $vtap}});
 
     # use proper virtio
     # $svirt->add_interface({ type => 'network', source => { network => 'default' }, model => { type => 'virtio' } });
 
 
+    # TODO you need this part for stress test
     $svirt->define_and_start;
 
     if (!get_var("BOOT_HDD_IMAGE") or (get_var('PATCHED_SYSTEM') and !get_var('ZDUP'))) {

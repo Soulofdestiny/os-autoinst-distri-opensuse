@@ -47,6 +47,8 @@ sub system_status {
 sub system_login {
     my $self = shift;
     $self->wait_boot;
+
+    # TODO you have to uncomment this and only switch to 'root-console' or get rid of the VIRTIO_CONSOLE variable in order to run correctly
     if (get_var('VIRTIO_CONSOLE')) {
         select_console('root-virtio-terminal');
     }
