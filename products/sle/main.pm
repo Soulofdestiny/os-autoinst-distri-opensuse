@@ -931,6 +931,7 @@ sub load_hacluster_tests {
     sleep 10;                                                # wait to make sure that support server created locks
     loadtest "installation/first_boot";
     loadtest "console/consoletest_setup";
+    loadtest("ha/barrier_init");
     loadtest "console/hostname" unless is_bridged_networking;
     #loadtest("ha/firewall_disable");
     #loadtest("ha/ntp_client");
@@ -1197,8 +1198,6 @@ elsif (get_var("FIPS_TS")) {
     }
 }
 elsif (get_var("HA_MM")) {
-    loadtest 'boot/boot_to_desktop';
-    loadtest("ha/barrier_init");
 }
 elsif (get_var("HACLUSTER")) {
     load_hacluster_tests();

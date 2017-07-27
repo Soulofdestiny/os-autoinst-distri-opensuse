@@ -20,8 +20,12 @@ sub run {
     for my $clustername (split(/,/, get_var('CLUSTERNAME'))) {
         barrier_create("CLUSTER_INITIALIZED_" . $clustername,      2);;
     }
+    select_console 'root-console';
 
-    wait_for_children_to_start;
+    mutex_unlock 'dhcp';
+    mutex_unlock 'dns';
+    type_string "#I am here\n";
+    sleep 3000;
     
 
 sub test_flags {
