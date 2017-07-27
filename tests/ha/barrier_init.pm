@@ -25,8 +25,7 @@ sub run {
     mutex_unlock 'dhcp';
     mutex_unlock 'dns';
     type_string "#I am here\n";
-    sleep 3000;
-    
+} 
 
 sub test_flags {
     return {fatal => 1};
