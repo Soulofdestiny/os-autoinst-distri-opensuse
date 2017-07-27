@@ -17,9 +17,7 @@ use lockapi;
 use mmapi;
 
 sub run {
-    select_console 'root-console'
     for my $clustername (split(/,/, get_var('CLUSTERNAME'))) {
-        barrier_create("BARRIER_HA_" . $clustername,               2);
         barrier_create("CLUSTER_INITIALIZED_" . $clustername,      2);;
     }
 

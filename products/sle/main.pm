@@ -929,7 +929,6 @@ sub load_slenkins_tests {
 sub load_hacluster_tests {
     return unless (get_var("HACLUSTER"));
     sleep 10;                                                # wait to make sure that support server created locks
-    barrier_wait("BARRIER_HA_" . get_var("CLUSTERNAME"));    #nodes wait here
     loadtest "installation/first_boot";
     loadtest "console/consoletest_setup";
     loadtest "console/hostname" unless is_bridged_networking;
