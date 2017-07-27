@@ -1197,14 +1197,8 @@ elsif (get_var("FIPS_TS")) {
         load_fips_tests_crypt;
     }
 }
-elsif (get_var("HACLUSTER_SUPPORT_SERVER")) {
-    if (get_var("CTS")) {
-        loadtest "ha/ha_cts_support_server";
-    }
-    else {
-        loadtest("ha/barrier_init");
-        loadtest "ha/ha_support_server";
-    }
+elsif (get_var("HA_MM")) {
+    loadtest("ha/barrier_init");
 }
 elsif (get_var("HACLUSTER")) {
     load_hacluster_tests();

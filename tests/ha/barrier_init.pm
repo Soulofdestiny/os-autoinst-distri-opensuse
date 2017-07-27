@@ -17,36 +17,7 @@ use lockapi;
 use mmapi;
 
 sub run {
-    for my $clustername (split(/,/, get_var('CLUSTERNAME'))) {
-        barrier_create("BARRIER_HA_" . $clustername,               3);
-        barrier_create("CLUSTER_INITIALIZED_" . $clustername,      2);
-        barrier_create("NODE2_JOINED_" . $clustername,             2);
-        barrier_create("DLM_INIT_" . $clustername,                 2);
-        barrier_create("DLM_GROUPS_CREATED_" . $clustername,       2);
-        barrier_create("DLM_CHECKED_" . $clustername,              2);
-        barrier_create("DRBD_INIT_" . $clustername,                2);
-        barrier_create("DRBD_CHECKED_" . $clustername,             2);
-        barrier_create("DRBD_CHECK_DEVICE_HOST2_" . $clustername,  2);
-        barrier_create("DRBD_CREATE_DEVICE_HOST1_" . $clustername, 2);
-        barrier_create("DRBD_SETUP_DONE_" . $clustername,          2);
-        barrier_create("DRBD_MIGRATIONDONE_" . $clustername,       2);
-        barrier_create("OCFS2_INIT_" . $clustername,               2);
-        barrier_create("OCFS2_MKFS_DONE_" . $clustername,          2);
-        barrier_create("OCFS2_GROUP_ALTERED_" . $clustername,      2);
-        barrier_create("OCFS2_DATA_COPIED_" . $clustername,        2);
-        barrier_create("OCFS2_MD5_CHECKED_" . $clustername,        2);
-        barrier_create("BEFORE_FENCING_" . $clustername,           2);
-        barrier_create("FENCING_DONE_" . $clustername,             2);
-        barrier_create("LOGS_CHECKED_" . $clustername,             2);
-        barrier_create("CLVM_INIT_" . $clustername,                2);
-        barrier_create("CLVM_RESOURCE_CREATED_" . $clustername,    2);
-        barrier_create("CLVM_PV_VG_LV_CREATED_" . $clustername,    2);
-        barrier_create("CLVM_VG_RESOURCE_CREATED_" . $clustername, 2);
-        barrier_create("CLVM_RW_CHECKED_" . $clustername,          2);
-        barrier_create("CLVM_MD5SUM_" . $clustername,              2);
-        #    barrier_create("PACEMAKER_CTS_INSTALLED_" . $clustername, 2);
-        #    barrier_create("PACEMAKER_CTS_FINISHED_" . $clustername, 2);
-    }
+    sleep 3000;
     wait_for_children_to_start;
     for my $clustername (split(/,/, get_var('CLUSTERNAME'))) {
         barrier_wait("BARRIER_HA_" . $clustername);
