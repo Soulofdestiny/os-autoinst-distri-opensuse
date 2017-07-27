@@ -1198,6 +1198,7 @@ elsif (get_var("FIPS_TS")) {
     }
 }
 elsif (get_var("HA_MM")) {
+    loadtest 'boot/boot_to_desktop';
     loadtest("ha/barrier_init");
 }
 elsif (get_var("HACLUSTER")) {
