@@ -933,36 +933,36 @@ sub load_hacluster_tests {
     loadtest "installation/first_boot";
     loadtest "console/consoletest_setup";
     loadtest "console/hostname" unless is_bridged_networking;
-    loadtest("ha/firewall_disable");
-    loadtest("ha/ntp_client");
-    loadtest("ha/iscsi_client");
-    loadtest("ha/watchdog");
-    if (get_var("HOSTNAME") eq 'host1') {
-        loadtest("ha/ha_cluster_init");                      #node1 creates a cluster
-    }
-    else {
-        loadtest("ha/ha_cluster_join");                      #node2 joins the cluster
-    }
-    if (get_var("CTS")) {
-        loadtest("ha/cts");
-    }
-    else {
-        loadtest("ha/dlm");
-        loadtest("ha/clvm");
-        loadtest("ha/ocfs2");
-        loadtest("ha/drbd");
-        loadtest("ha/crm_mon");
-        if (get_var('HA_CLUSTER_TEST_ADVANCED')) {
-            loadtest("ha/fencing");
-            if (!get_var("HACLUSTERJOIN")) {    #node1 will be fenced
-                loadtest "ha/fencing_boot";
-                loadtest "ha/fencing_consoletest_setup";
-            }
-        }
-    }
+    #loadtest("ha/firewall_disable");
+    #loadtest("ha/ntp_client");
+    #loadtest("ha/iscsi_client");
+    #loadtest("ha/watchdog");
+    #if (get_var("HOSTNAME") eq 'host1') {
+    #    loadtest("ha/ha_cluster_init");                      #node1 creates a cluster
+    #}
+    #else {
+    #    loadtest("ha/ha_cluster_join");                      #node2 joins the cluster
+    #}
+    #if (get_var("CTS")) {
+    #    loadtest("ha/cts");
+    #}
+    #else {
+    #    loadtest("ha/dlm");
+    #    loadtest("ha/clvm");
+    #    loadtest("ha/ocfs2");
+    #    loadtest("ha/drbd");
+    #    loadtest("ha/crm_mon");
+    #    if (get_var('HA_CLUSTER_TEST_ADVANCED')) {
+    #        loadtest("ha/fencing");
+    #        if (!get_var("HACLUSTERJOIN")) {    #node1 will be fenced
+    #            loadtest "ha/fencing_boot";
+    #            loadtest "ha/fencing_consoletest_setup";
+    #        }
+    #    }
+    #}
 
-    # check_logs must be after ha/fencing
-    loadtest("ha/check_logs") if get_var('HA_CLUSTER_TEST_ADVANCED');
+    ## check_logs must be after ha/fencing
+    #loadtest("ha/check_logs") if get_var('HA_CLUSTER_TEST_ADVANCED');
     return 1;
 }
 

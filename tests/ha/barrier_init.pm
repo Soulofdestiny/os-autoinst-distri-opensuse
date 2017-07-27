@@ -17,12 +17,14 @@ use lockapi;
 use mmapi;
 
 sub run {
-    sleep 3000;
-    wait_for_children_to_start;
+    select_console 'root-console'
     for my $clustername (split(/,/, get_var('CLUSTERNAME'))) {
-        barrier_wait("BARRIER_HA_" . $clustername);
+        barrier_create("BARRIER_HA_" . $clustername,               2);
+        barrier_create("CLUSTER_INITIALIZED_" . $clustername,      2);;
     }
-}
+
+    wait_for_children_to_start;
+    
 
 sub test_flags {
     return {fatal => 1};
