@@ -19,7 +19,7 @@ use mmapi;
 sub run {
     for my $clustername (split(/,/, get_var('CLUSTERNAME'))) {
         barrier_create("CLUSTER_INITIALIZED_" . $clustername,      2);;
-        barrier_create("NODE2_JOINED_" . $clustername);
+        barrier_create("NODE2_JOINED_" . $clustername, 2);
     }
     select_console 'root-console';
 

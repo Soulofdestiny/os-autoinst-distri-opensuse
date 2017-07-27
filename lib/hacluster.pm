@@ -15,11 +15,11 @@ use lockapi;
 use strict;
 
 sub is_node1 {
-    return (get_var("HOSTNAME") eq "host1");
+    return (get_var("HOSTNAME") eq "ha-node1");
 }
 
 sub is_node2 {
-    return (get_var("HOSTNAME") eq "host2");
+    return (get_var("HOSTNAME") eq "ha-node2");
 }
 
 sub cluster_name {
