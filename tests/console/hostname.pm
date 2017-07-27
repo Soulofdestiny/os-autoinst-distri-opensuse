@@ -28,8 +28,6 @@ sub run {
     script_run "systemctl --no-pager status network.service";
     save_screenshot;
     assert_script_run "if systemctl -q is-active network.service; then systemctl reload-or-restart network.service; fi";
-
-    sleep 3000;
 }
 
 sub test_flags {

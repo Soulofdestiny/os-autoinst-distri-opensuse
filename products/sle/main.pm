@@ -937,12 +937,12 @@ sub load_hacluster_tests {
     #loadtest("ha/ntp_client");
     #loadtest("ha/iscsi_client");
     #loadtest("ha/watchdog");
-    #if (get_var("HOSTNAME") eq 'host1') {
-    #    loadtest("ha/ha_cluster_init");                      #node1 creates a cluster
-    #}
-    #else {
-    #    loadtest("ha/ha_cluster_join");                      #node2 joins the cluster
-    #}
+    if (get_var("HOSTNAME") eq 'ha-node1') {
+        loadtest("ha/ha_cluster_init");                      #node1 creates a cluster
+    }
+    else {
+        loadtest("ha/ha_cluster_join");                      #node2 joins the cluster
+    }
     #if (get_var("CTS")) {
     #    loadtest("ha/cts");
     #}
