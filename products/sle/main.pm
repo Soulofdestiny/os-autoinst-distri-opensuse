@@ -933,10 +933,10 @@ sub load_hacluster_tests {
     loadtest "console/consoletest_setup";
     loadtest("ha/barrier_init");
     loadtest "console/hostname" unless is_bridged_networking;
-    #loadtest("ha/firewall_disable");
-    #loadtest("ha/ntp_client");
-    #loadtest("ha/iscsi_client");
-    #loadtest("ha/watchdog");
+    loadtest("ha/firewall_disable");
+    loadtest("ha/ntp_client");
+    loadtest("ha/iscsi_client");
+    loadtest("ha/watchdog");
     if (get_var("HOSTNAME") eq 'ha-node1') {
         loadtest("ha/ha_cluster_init");                      #node1 creates a cluster
     }

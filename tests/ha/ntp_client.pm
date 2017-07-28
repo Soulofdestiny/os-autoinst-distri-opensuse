@@ -23,12 +23,13 @@ sub run {
     assert_screen "yast2-ntp-client-add-source";
     send_key 'alt-n';    #Next
     assert_screen "yast2-ntp-client-add-server";
-    type_string "ntp";
+    type_string "pool.ntp.org";
     send_key 'alt-o';    #Ok
     assert_screen "yast2-ntp-client-server-list";
     send_key 'alt-o';    #Ok
     wait_still_screen;
     $self->clear_and_verify_console;
+
     type_string "echo \"ntpcount=`ntpq -p | tail -n +3 | wc -l`\" > /dev/$serialdev\n";
     die "Adding NTP servers failed" unless wait_serial "ntpcount=1";
 }
