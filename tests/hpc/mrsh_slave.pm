@@ -22,13 +22,11 @@ use utils;
 sub run {
     my $self = shift;
     select_console 'root-console';
-    $self->setup_static_mm_network();
 
     # stop firewall, so key can be copied
     assert_script_run "rcSuSEfirewall2 stop";
 
-    # set proper hostname
-    assert_script_run "hostnamectl set-hostname mrsh-slave";
+    sleep 3000;
 
     # install mrsh
     zypper_call('in mrsh mrsh-server');

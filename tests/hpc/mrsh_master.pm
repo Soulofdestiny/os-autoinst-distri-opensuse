@@ -22,27 +22,27 @@ use utils;
 
 sub run {
     my $self     = shift;
-    my $slave_ip = get_required_var('HPC_SLAVE_IP');
     barrier_create("MRSH_INSTALLATION_FINISHED", 2);
     barrier_create("MRSH_MUNGE_ENABLED",         2);
     barrier_create("SLAVE_MRLOGIN_STARTED",      2);
     barrier_create("MRSH_MASTER_DONE",           2);
 
     select_console 'root-console';
-    $self->setup_static_mm_network();
-
-    # set proper hostname
-    assert_script_run "hostnamectl set-hostname mrsh-master";
 
     # stop firewall
     assert_script_run "rcSuSEfirewall2 stop";
+
+    sleep 3000;
 
     # install mrsh
     zypper_call('in mrsh mrsh-server');
     barrier_wait("MRSH_INSTALLATION_FINISHED");
 
     # copy key
-    $self->exec_and_insert_password("scp -o StrictHostKeyChecking=no /etc/munge/munge.key root\@$slave_ip:/etc/munge/munge.key");
+    # TODO rewrite with some variable defining the number of nodes
+    for (1 .. 2) {
+        $self->exec_and_insert_password("scp -o StrictHostKeyChecking=no /etc/munge/munge.key root\@mrsh_slave$_:/etc/munge/munge.key");
+    }
     mutex_create("MRSH_KEY_COPIED");
 
     # start munge
@@ -53,17 +53,17 @@ sub run {
     # make sure that nobody has permissions for $serialdev to get openQA work properly
     assert_script_run("chmod 666 /dev/$serialdev");
 
-    # run mrlogin, mrcp, and mrsh (as normal and local user, e.g. nobody)
-    type_string("su - nobody\n");
-    assert_screen("user-nobody");
-    type_string("mrlogin $slave_ip\n");
-    assert_screen("mrlogin");
-    send_key('ctrl-d');
-    assert_screen("mrlogout");
-    assert_script_run("mrsh $slave_ip rm -f /tmp/hello");
-    assert_script_run("echo \"Hello world!\" >/tmp/hello");
-    assert_script_run("mrcp /tmp/hello $slave_ip:/tmp/hello");
-    assert_script_run("mrsh $slave_ip cat /tmp/hello");
+    #  # run mrlogin, mrcp, and mrsh (as normal and local user, e.g. nobody)
+    #  type_string("su - nobody\n");
+    #  assert_screen("user-nobody");
+    #  type_string("mrlogin $slave_ip\n");
+    #  assert_screen("mrlogin");
+    #  send_key('ctrl-d');
+    #  assert_screen("mrlogout");
+    #  assert_script_run("mrsh $slave_ip rm -f /tmp/hello");
+    #  assert_script_run("echo \"Hello world!\" >/tmp/hello");
+    #  assert_script_run("mrcp /tmp/hello $slave_ip:/tmp/hello");
+    #  assert_script_run("mrsh $slave_ip cat /tmp/hello");
 
     barrier_wait("MRSH_MASTER_DONE");
 }

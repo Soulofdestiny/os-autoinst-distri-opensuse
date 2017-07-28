@@ -1392,6 +1392,8 @@ elsif (get_var('HPC')) {
             # load hpc multimachine scenario based on value of HPC variable
             # e.g 'hpc/$testsuite_[master|slave].pm'
             my $hpc_mm_scenario = get_var('HPC');
+            loadtest "console/consoletest_setup";
+            loadtest "console/hostname";
             loadtest "hpc/$hpc_mm_scenario" if $hpc_mm_scenario ne '1';
         }
     }
