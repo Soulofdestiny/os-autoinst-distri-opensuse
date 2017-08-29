@@ -277,7 +277,9 @@ sub run {
 
     # We have textmode installation via ssh and the default vnc installation so far
     if (check_var('VIDEOMODE', 'text') || check_var('VIDEOMODE', 'ssh-x')) {
-        type_string("yast.ssh\n");
+        # Workaround for bsc#1054448, can be removed after bug is fixed
+        type_string("TERM=linux yast.ssh\n");
+        record_soft_failure('bsc#1054448');
     }
     wait_still_screen;
 

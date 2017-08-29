@@ -82,7 +82,9 @@ sub run {
         if (check_var("VIDEOMODE", "text")) {
             wait_serial("run 'yast.ssh'", 300) || die "linuxrc didn't finish";
             select_console("installation");
-            type_string("yast.ssh\n");
+            # Workaround for bsc#1054448, can be removed after bug is fixed
+            type_string("TERM=linux yast.ssh\n");
+            record_soft_failure('bsc#1054448');
         }
         else {
             wait_serial(' Starting YaST2 ', 300) || die "yast didn't start";
