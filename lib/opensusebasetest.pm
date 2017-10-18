@@ -340,7 +340,7 @@ sub wait_boot {
 
         # on z/(K)VM we need to re-select a console
         if ($textmode || check_var('DESKTOP', 'textmode')) {
-            select_console('root-console');
+            select_console('root-console', timeout => 90);
         }
         else {
             select_console('x11', await_console => 0);

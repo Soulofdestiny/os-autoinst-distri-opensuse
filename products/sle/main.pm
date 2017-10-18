@@ -1197,6 +1197,7 @@ elsif (get_var("HA_CLUSTER")) {
 }
 elsif (get_var("QA_TESTSET")) {
     boot_hdd_image;
+    loadtest 'x11/fail_early';
     if (get_var('INSTALL_KOTD')) {
         loadtest 'kernel/install_kotd';
     }
