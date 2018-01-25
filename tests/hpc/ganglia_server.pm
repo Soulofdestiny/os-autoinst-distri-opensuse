@@ -12,6 +12,7 @@
 # Tags: https://fate.suse.com/323979 
 
 use base "hpcbase";
+use base "x11regressiontest";
 use strict;
 use warnings;
 use testapi;
@@ -21,6 +22,7 @@ use utils;
 sub run {
     my $self     = shift;
     my $slave_ip = get_required_var('HPC_SLAVE_IP');
+    my ($server_ip) = get_required_var('HPC_HOST_IP') =~ /(.*)\/.*/;
     barrier_create("GANGLIA_INSTALLED", 2);
     barrier_create("GANGLIA_SERVER_DONE", 2);
     barrier_create("GANGLIA_CLIENT_DONE", 2);
@@ -29,7 +31,7 @@ sub run {
     assert_script_run('hostnamectl set-hostname ganglia-server');
     
     # Prepare ganglia-server by installing the packages
-    zypper_call('in ganglia-gmetad ganglia-gmond ganglia-gmetad-skip-bcheck') 
+    zypper_call('in ganglia-gmetad ganglia-gmond ganglia-gmetad-skip-bcheck'); 
 
     # Start gmetad and gmond on server 
     systemctl 'start gmetad'; 
@@ -39,30 +41,24 @@ sub run {
     barrier_wait('GANGLIA_INSTALLED');
     barrier_wait('GANGLIA_CLIENT_DONE');
 
-
+    #install web frontend and start apache
+    zypper_call('in ganglia-web');
+    assert_script_run('a2enmod php7'); 
+    systemctl('start apache2');
     
+    # switch to gui
+    select_console('x11');
+ 
+    # start browser and access ganglia web ui
+    x11_start_program("firefox http://$server_ip/ganglia", valid => 0);
+    $self->firefox_check_default;
+    assert_screen('ganglia-web'); 
+    assert_and_click('ganglia-node-dropdown');
+    assert_and_click('ganglia-select-server-node');
+    assert_screen('ganglia-node-report', 60);
 
-
-    
-
-    # # install munge and wait for slave
-    # zypper_call('in munge');
-    # barrier_wait('MUNGE_INSTALLATION_FINISHED');
-
-    # # copy munge key
-    # $self->exec_and_insert_password("scp -o StrictHostKeyChecking=no /etc/munge/munge.key root\@$slave_ip:/etc/munge/munge.key");
-    # mutex_create('MUNGE_KEY_COPIED');
-
-    # # enable and start service
-    # $self->enable_and_start('munge');
-    # barrier_wait("MUNGE_SERVICE_ENABLED");
-
-    # # test if munch works fine
-    # assert_script_run('munge -n');
-    # assert_script_run('munge -n | unmunge');
-    # $self->exec_and_insert_password("munge -n | ssh $slave_ip unmunge");
-    # assert_script_run('remunge');
-    # mutex_create('MUNGE_DONE');
+    # tell client that server is done
+    barrier_wait('GANGLIA_SERVER_DONE');
 }
 
 1;

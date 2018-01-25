@@ -29,7 +29,8 @@ sub run {
     assert_script_run "zypper lr | grep $reponame";
 
     zypper_call("--gpg-auto-import-keys ref");
-    zypper_call 'up';
+# TODO check if this is needed for sle15
+#    zypper_call 'up';
 }
 
 sub test_flags {
