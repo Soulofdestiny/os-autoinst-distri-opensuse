@@ -1,6 +1,6 @@
 # SUSE's openQA tests
 #
-# Copyright © 2017 SUSE LLC
+# Copyright © 2018 SUSE LLC
 #
 # Copying and distribution of this file, with or without modification,
 # are permitted in any medium without royalty provided the copyright
@@ -20,10 +20,11 @@ use utils;
 
 sub run {
     my $self = shift;
+    my ($server_ip) = get_required_var('HPC_MASTER_IP') =~ /(.*)\/.*/;
 
     # set proper hostname
     assert_script_run('hostnamectl set-hostname ganglia-client');
-
+    
     # Prepare Client by installing "ganglia-gmond"
     zypper_call 'in ganglia-gmond';
 
@@ -32,33 +33,19 @@ sub run {
 
     # wait for server 
     barrier_wait('GANGLIA_INSTALLED');
-    
+
     # Check if gmond has connected to gmetad
-    # TODO some grep for both nodes
-    # assert_script_run "gstat -a" or better script-output, for now only script_run
-    script_run 'gstat -a';
-
-    # Check if an arbitrary value could be sent via gmetric command
-    # TODO assert_script_run 'gmetric -n \"TestMetric\" -v \"foobar\" -t string';
-    # TODO assert_script_run 'nc ganglia-server 8649';
-    script_run 'gmetric -n \"TestMetric\" -v \"foobar\" -t string';
-    script_run 'nc ganglia-server 8649';
-
+    validate_script_output "gstat -a", sub { m/.*Hosts: 2.*/};
     
+    # Check if an arbitrary value could be sent via gmetric command
+    my $testMetric = "openQA";
+    type_string "gmetric -n \"$testMetric\" -v \"openQA\" -t string | tee /dev/ttyS0";
+    assert_script_run "echo \"\\n\" | nc $server_ip 8649 > nc.out";
+    sleep 5;
+    assert_script_run "grep $testMetric nc.out";
+
+    barrier_wait('GANGLIA_CLIENT_DONE');
     barrier_wait('GANGLIA_SERVER_DONE');
-
-    # 
-    # # install munge, wait for master and munge key
-    # zypper_call('in munge');
-    # barrier_wait('MUNGE_INSTALLATION_FINISHED');
-    # mutex_lock('MUNGE_KEY_COPIED');
-
-    # # start and enable munge
-    # $self->enable_and_start('munge');
-    # barrier_wait("MUNGE_SERVICE_ENABLED");
-
-    # # wait for master to finish
-    # mutex_lock('MUNGE_DONE');
 }
 
 1;
