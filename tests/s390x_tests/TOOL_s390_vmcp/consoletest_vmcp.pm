@@ -1,7 +1,11 @@
 # SUSE’s openQA tests
 #
 # Copyright © 2009-2013 Bernhard M. Wiedemann
+<<<<<<< HEAD
 # Copyright © 2012-2016 SUSE LLC                                                                                    
+=======
+# Copyright © 2012-2016 SUSE LLC
+>>>>>>>  adding s390x_tests
 # Copyright (C) 2018 IBM Corp.
 #
 # Copying and distribution of this file, with or without modification,
@@ -75,7 +79,11 @@ sub run {
     $self->clear_and_verify_console;
 
 
+<<<<<<< HEAD
 # start of modification for s390 test TOOL_s390_vmcp    
+=======
+# start of modification for s390 test TOOL_s390_vmcp
+>>>>>>>  adding s390x_tests
     my $TC_PATH = get_var('TC_PATH') . "/TOOL_s390_vmcp/";
     assert_script_run "wget -r -np -R 'index.html*'  $TC_PATH";
 
