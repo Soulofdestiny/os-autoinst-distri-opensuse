@@ -1,0 +1,38 @@
+# TOOL_s390_vmcp
+
+Allows Linux users to send commands to the z/VM control program (CP).
+The normal usage is to invoke vmcp with the command you want to execute.
+
+## Getting Started
+
+The test case contains one shell script:
+
+- **vmcp_main.sh**: *basically executes the vmcp tool with different parameters and verifies that
+              output and exitcodes are as expected*
+
+## Prerequisites
+
+z/VM guest must be prepared to be populated with SLES guest OS.
+vmcp_main.sh and common.sh shell scripts must be available on some local server via http to be fetched from zVM guest when ready.
+
+## Installation
+
+OpenQA deploys SLE onto a z/VM guest automatically.
+
+## Running the tests
+
+Transfer the scripts to the target system and run:
+
+./vmcp_main.sh
+
+To run the test case using openQA, add `$TC_PATH` variable to download scripts, e.g.
+TC_PATH="IP_ADDR/path_to_script_dir/"
+
+
+## Versioning
+
+Tested already on SLES 12 SP3
+
+## License
+
+The files in this directory are licensed under the "FSF All Permissive License" except if indicated otherwise in the file.
