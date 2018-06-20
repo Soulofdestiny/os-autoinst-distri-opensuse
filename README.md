@@ -1,48 +1,53 @@
-os-autoinst/openQA tests for openSUSE and SUSE Linux Enterprise [![Build Status](https://travis-ci.org/os-autoinst/os-autoinst-distri-opensuse.svg?branch=master)](https://travis-ci.org/os-autoinst/os-autoinst-distri-opensuse?branch=master)
-=================================================================================================================================================================================================================================
+# TOOL_s390_CHCHP
 
-For more details see http://os-autoinst.github.io/openQA/
+Testing the functionality of lschp and chchp.
 
+**chchp** - modify channel-path state.
+The chchp command modifies the state of one or more channel-paths. Channel-path identifiers are specified in hexadecimal notation either simply as the CHPID-number (e.g. e0) or in the form
 
-## How to contribute
+          <cssid>.<id>
 
-Fork the repository and make some changes.
-Once you're done with your changes send a pull request. You have to agree to
-the license. Thanks!
-If you have questions, visit us on irc.freenode.net in #opensuse-factory or
-ask on our mailing list opensuse-factory@opensuse.org
+where is the channel-subsystem identifier and is the CHPID-number (e.g. 0.7e). An operation can be performed on more than one channel-path by specifying multiple identifiers as a comma-separated list or a range or a combination of both. 
 
+Note that modifying the state of channel-paths can affect the availability of I/O devices as well as trigger associated functions (e.g. channel-path verification or device scanning) which in turn can result in a temporary increase in processor, memory and I/O load.
 
-### Coding style
-
-The project follows the rules of the parent project
-[os-autoinst](https://github.com/os-autoinst/os-autoinst#how-to-contribute).
-and additionally the following rules:
-
-* Take
-  [example boot.pm](https://github.com/os-autoinst/os-autoinst-distri-example/blob/master/tests/boot.pm)
-  as a template for new files
-* The test code should use simple perl statements, not overly hacky
-  approaches, to encourage contributions by newcomers and test writers which
-  are not programmers or perl experts
-* Update the copyright information with the current year and *SUSE LLC* as the
-  legal entity. For new files make sure to only state the year during which
-  the code was written.
-* Use `my ($self) = @_;` for parameter parsing in methods when accessing the
-  `$self` object. Do not parse any parameter if you do not need any.
-* [DRY](https://en.wikipedia.org/wiki/Don't_repeat_yourself)
-* Every pull request is tested by the travis CI by calling the equivalent of
-  `make test` on the tests. It is recommended to call `tools/tidy` locally to
-  fix the style of your changes before providing a pull request. Call `make
-  test` to conduct all tests.
+**lschp** - list information about available channel-paths.
+The lschp command lists status and type information about available channel-paths.
 
 
-Also see the
-[DoD/DoR](https://progress.opensuse.org/projects/openqatests/wiki/Wiki#Definition-of-DONEREADY)
-as a helpful (but not mandatory) guideline for new contributions.
+## Getting Started
 
+The test case contains the following scripts:
+
+- **chchpmain.sh**		*script for testing chchp tool*
+- **common.sh**			*contains common functions which are used in various test cases*
+- **lschp-main.sh**		*script for testing lschp tool*
+
+## Prerequisites
+        
+z/VM guest must be prepared to be populated with SLES guest OS        
+the above scripts must be available on some local server via http to be fetched from zVM guest when ready. 
+
+## Installation
+
+OpenQA deploys SLE onto a z/VM guest automatically. 
+
+## Running the tests
+
+Transfer the scripts to the target system and run:  
+
+./lschp-main.sh
+
+./chchpmain.sh 0.36
+
+To run the test case using openQA, add `$TC_PATH` variable to download scripts, e.g.  
+TC_PATH="IP_ADDR/path_to_script_dir/"  
+
+
+## Versioning
+
+Tested already on SLES 12 SP3.
 
 ## License
 
-Most files are minimal copyleft, but some more complex tests are GPL. So please
-check the license within the files.
+The files in this directory are licensed under the "FSF All Permissive License" except if indicated otherwise in the file.
