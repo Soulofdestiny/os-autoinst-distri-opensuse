@@ -1,7 +1,7 @@
 # SUSE’s openQA tests
 #
 # Copyright © 2009-2013 Bernhard M. Wiedemann
-# Copyright © 2012-2018 SUSE LLC
+# Copyright © 2012-2016 SUSE LLC                                                                                    
 # Copyright (C) 2018 IBM Corp.
 #
 # Copying and distribution of this file, with or without modification,
@@ -9,8 +9,8 @@
 # notice and this notice are preserved.  This file is offered as-is,
 # without any warranty.
 #
-# Summary:  Based on consoletest_setup.pm (console test pre setup, stopping and disabling packagekit, install curl and tar to get logs and so on)
-# modified for running the testcase TOOL_s390_vmcp on s390x.
+# Summary:  Based on consoltest_setup.pm (console test pre setup, stopping and disabling packagekit, install curl and tar to get logs and so on)
+# modified for running the testcase TOOL_s390_CHCHP on s390x.
 
 use base "s390base";
 use testapi;
@@ -19,9 +19,10 @@ use strict;
 
 sub run {
     my $self = shift;
-    $self->copy_testsuite('vmcp');
-    $self->execute_script('vmcp.sh');
-    $self->cleanup_testsuite('vmcp');
+    $self->copy_testsuite('chchp');
+    $self->execute_script('lschp-main.sh');
+    $self->execute_script('chchpmain.sh 0.36');
+    $self->cleanup_testsuite('chchp');
 }
 
 sub post_fail_hook {

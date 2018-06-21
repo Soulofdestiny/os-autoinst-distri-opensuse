@@ -1,9 +1,4 @@
 # Copyright (C) 2018 IBM Corp.
-<<<<<<< HEAD
-# 
-=======
-#
->>>>>>>  adding s390x_tests
 # Copying and distribution of this file, with or without modification,
 # are permitted in any medium without royalty provided the copyright
 # notice and this notice are preserved.  This file is offered as-is,
@@ -16,22 +11,12 @@ REGEX_KERNEL_PROBLEMS="(badness|kernel bug|corruption|erp failed|dereference|oop
 
 init_tests(){
    TESTCASE_SECTION_COUNTER=0;
-<<<<<<< HEAD
-   TESTCASE_NUMBER_OF_FAILED=0 
-   TESTCASE_NUMBER_OF_PASS=0 
-=======
    TESTCASE_NUMBER_OF_FAILED=0
    TESTCASE_NUMBER_OF_PASS=0
->>>>>>>  adding s390x_tests
 }
 
 
 show_test_results(){
-<<<<<<< HEAD
- echo 
-=======
- echo
->>>>>>>  adding s390x_tests
  echo "===> Results:"
  echo
  echo "Failed tests     : $TESTCASE_NUMBER_OF_FAILED"
@@ -153,13 +138,8 @@ load_vmcp(){
 }
 
 start_section(){
-<<<<<<< HEAD
-   echo -e "\n#####################################################################################" 
-   echo -e "### [$1] START SECTION : $2" 
-=======
    echo -e "\n#####################################################################################"
    echo -e "### [$1] START SECTION : $2"
->>>>>>>  adding s390x_tests
    echo -e "###"
    echo -e "### TIMESTAMP: $(date --date="today" "+%Y-%m-%d %H:%M:%S")\n"
    dmesg -c | egrep -C1000 -i "$REGEX_KERNEL_PROBLEMS" && assert_warn 1 0 "Kernel messages"
@@ -169,15 +149,8 @@ start_section(){
 end_section(){
    dmesg -c | egrep -C1000 -i "$REGEX_KERNEL_PROBLEMS" && assert_warn 1 0 "Kernel messages"
    echo -e "\n### TIMESTAMP: $(date --date="today" "+%Y-%m-%d %H:%M:%S")"
-<<<<<<< HEAD
-   echo -e "###" 
-   echo -e "### [$1] END SECTION";
-   echo -e "#####################################################################################\n" 
-=======
-   echo -e "###"
    echo -e "### [$1] END SECTION";
    echo -e "#####################################################################################\n"
->>>>>>>  adding s390x_tests
    return 0
 }
 
@@ -347,11 +320,7 @@ net_vlan_up(){
 
  echo
  #vconfig add $IFNAME $VLANID >  $xDATE-$LOGNAME.log  2>&1
-<<<<<<< HEAD
- ip link add dev $IFNAME.$VLANID link $IFNAME name $VLANNAME type vlan id $VLANID > $xDATE-$LOGNAME.log  2>&1 
-=======
  ip link add dev $IFNAME.$VLANID link $IFNAME name $VLANNAME type vlan id $VLANID > $xDATE-$LOGNAME.log  2>&1
->>>>>>>  adding s390x_tests
  assert_warn $? 0 "Set VLAN ok?"
  echo
  cat /proc/net/vlan/config >  $xDATE-$LOGNAME.log  2>&1
@@ -967,7 +936,3 @@ net_vlan_up_ip(){
  echo
 
 }
-<<<<<<< HEAD
-
-=======
->>>>>>>  adding s390x_tests
