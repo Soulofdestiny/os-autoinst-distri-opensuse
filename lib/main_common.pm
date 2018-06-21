@@ -958,6 +958,13 @@ sub load_consoletests {
         loadtest "rt/kmp_modules";
     }
     loadtest "console/consoletest_setup";
+    
+    if (get_var('IBM_TESTS')) {
+        loadtest 's390x_tests/TOOL_s390_vmcp/consoletest_' . get_var('IBM_TESTS');
+        loadtest 's390x_tests/TOOL_s390_vmcp/consoletest_' . get_var('IBM_TESTS');
+        return 1;
+    }
+
     loadtest 'console/integration_services' if is_hyperv;
     loadtest "locale/keymap_or_locale";
     loadtest "console/repo_orphaned_packages_check" if is_jeos;
