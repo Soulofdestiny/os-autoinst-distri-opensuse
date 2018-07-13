@@ -25,8 +25,7 @@ Transfer the scripts to the target system and run:
 
 ./vmcp_main.sh
 
-To run the test case using openQA, add `$TC_PATH` variable to download scripts, e.g.  
-TC_PATH="IP_ADDR/path_to_script_dir/"  
+To run the test case using openQA, put the script vmcp_main.sh into into the data folder on openQA server 
 
 
 ## Versioning
