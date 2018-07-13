@@ -48,5 +48,4 @@ verifyErrorConditions;
 section_end;
 
 show_test_results;
-section_end;
 
