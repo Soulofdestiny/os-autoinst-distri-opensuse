@@ -939,4 +939,39 @@ net_vlan_up_ip(){
  echo
 
 }
+#######################################################
+###
+### Return path to tool if $objdir is set
+###
+### Example:
+### s390_get_tool_path dasdfmt
+###
 
+s390_get_tool_path(){
+        if [ "$objdir" == "" ]; then
+                echo $1
+        else
+                echo "$objdir/$1"
+        fi
+}
+
+#########################################################################
+### HINT: With SLES15 the /etc/SuSE-release file was abandoned
+###                            os-release is now used
+###
+### Returns 0 if script runs on SLES15
+###
+### Example:
+### isSles15
+### echo $?
+
+isSles15(){
+   if [ ! -f /etc/os-release ]; then
+      return 1
+   fi
+   if (grep -i -q "SUSE Linux Enterprise Server 15" /etc/os-release); then
+      return 0
+   fi
+   return 1
+}
+ 
