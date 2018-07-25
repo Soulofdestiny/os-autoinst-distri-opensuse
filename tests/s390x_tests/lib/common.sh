@@ -975,3 +975,25 @@ isSles15(){
    return 1
 }
  
+#######################################################
+###
+### common.sh :: s390_config_check()
+###
+### Check if s390 config is set
+###
+### Example:
+### s390_config_check S390_CONFIG_DASD
+###
+
+s390_config_check(){
+        local config=$1
+        local config_line=$(env | grep "$config=")
+
+        if [ $? -ne 0 ]; then
+                assert_warn fail pass "Config option $config not defined"
+                exit 1
+        else
+                value=$(echo $config_line | awk -F = '{print $2}')
+                echo "USING CONFIG: $config=$value"
+        fi
+}
