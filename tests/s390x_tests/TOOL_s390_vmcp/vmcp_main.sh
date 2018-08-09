@@ -13,7 +13,8 @@
 ###############################################################################
 
 
-source ./common.sh || exit 1
+source lib/auxx.sh || exit 1
+source lib/env.sh || exit 1
 
 verifyBasicVMCPCommands() {
 	assert_exec 0 "vmcp --version";

@@ -7,7 +7,8 @@
 
 #!/bin/bash
 
-source "common.sh" || exit 1
+source lib/auxx.sh || exit 1
+source lib/env.sh || exit 1
 
 HTC="" # Hyptop command line
 HOSTNAME=`hostname`
@@ -105,9 +106,7 @@ main(){
 	# Display the Summary
 	show_test_results
 
-	end_section 0
 
-	exit 0
 }
 
 # for debugging, uncomment the following line to get log output on the target guest VM 
