@@ -58,7 +58,7 @@ sub run {
     }
 
     # Stop serial-getty on serial console to avoid serial output pollution with login prompt
-    systemctl "stop serial-getty\@$testapi::serialdev";
+    systemctl "stop serial-getty\@$testapi::serialdev" if !check_var('BACKEND', 's390x'); #FIXME on s390x zVM not possible
     # Mask if is qemu backend as use serial in remote installations e.g. during reboot
     systemctl "mask serial-getty\@$testapi::serialdev" if check_var('BACKEND', 'qemu');
 
@@ -75,6 +75,7 @@ sub run {
 }
 
 sub post_fail_hook {
+    return 1;
     my $self = shift;
 
     $self->export_logs();
