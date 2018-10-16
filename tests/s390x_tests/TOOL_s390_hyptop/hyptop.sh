@@ -58,6 +58,7 @@ main(){
 	calling_hyptop_expected_works
 	HTC="hyptop -b -n2" 				# hyptop for the entire CEC
 	calling_hyptop_expected_works
+        HOSTNAME=`hyptop -b -n1  | sed -ne '4p' | sed -e 's/ .*//'`
 	HTC="hyptop -b -n2 -s $HOSTNAME" 		# Calling for current host only
 	calling_hyptop_expected_works
 	HTC="hyptop -b -n2 -w sys -s $HOSTNAME"	# Calling with detailed window
