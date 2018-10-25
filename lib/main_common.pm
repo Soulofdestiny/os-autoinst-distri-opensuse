@@ -1106,6 +1106,20 @@ sub load_consoletests {
     loadtest "console/system_prepare";
     loadtest "console/consoletest_setup";
     loadtest "console/lvm_thin_check" if get_var('LVM_THIN_LV');
+    
+    if (get_var('IBM_TESTS')) {
+        # prepare tarballs for the testcase
+        # the path below should be reworked to be universal for any distribution, now it's for openQA deployed on opensuse 
+        my $tcs_path = "/var/lib/openqa/share/tests/sle/data/s390x/";        
+        system("cd ${tcs_path}lib && rm -f common.tgz && tar -czf common.tgz ./*.sh");
+
+        my $testset = get_var('IBM_TESTSET'); # e.g. "KERNEL or TOOL or MEMORY"
+        foreach my $tc (split(',', get_var('IBM_TESTS'))) {
+               system("cd ${tcs_path}${testset}${tc} && rm -f ${testset}${tc}.tgz && tar -czf ${testset}${tc}.tgz ./*");
+               loadtest "s390x_tests/consoletest_${testset}${tc}";
+            }
+            return 1;
+      }
     loadtest 'console/integration_services' if is_hyperv;
     loadtest "locale/keymap_or_locale";
     loadtest "console/repo_orphaned_packages_check" if is_jeos;
