@@ -20,12 +20,13 @@ use strict;
 sub run {
     my $self = shift;
     $self->copy_testsuite('KERNEL_btrfs');
-    $self->execute_script('btrfs.eckd.sh', '"xxxx xxxx xxxx xxxx xxxx xxxx"', 1200);
+    my $DASD_LIST = get_required_var("DASD_LIST");
+    $self->execute_script('btrfs.eckd.sh', "\"$DASD_LIST\"", 1200);
 }
 
 sub post_fail_hook {
     my $self = shift;
-   $self->export_logs();
+    $self->export_logs();
 }
 
 sub test_flags {
