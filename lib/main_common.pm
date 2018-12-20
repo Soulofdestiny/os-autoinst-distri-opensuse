@@ -1083,6 +1083,10 @@ sub load_consoletests {
             return 1;
       }
 
+<<<<<<< HEAD
+=======
+    loadtest 'console/integration_services' if is_hyperv || is_vmware;
+>>>>>>> Fix main_common.pm
     loadtest "locale/keymap_or_locale";
     loadtest "console/orphaned_packages_check" if is_jeos;
     loadtest "console/force_scheduled_tasks" unless is_jeos;
@@ -1554,13 +1558,10 @@ sub load_extra_tests_console {
     }
     # bind need source package and legacy and development module on SLE15+
     loadtest 'console/bind' if get_var('MAINT_TEST_REPO');
-<<<<<<< HEAD
     unless (is_sle('<12-SP3')) {
         loadtest 'x11/evolution/evolution_prepare_servers';
         loadtest 'console/mutt';
     }
-=======
->>>>>>> Fix main_common.pm
     loadtest 'console/systemd_testsuite' if is_sle('15+') && get_var('QA_HEAD_REPO');
     loadtest 'console/mdadm' unless is_jeos;
     loadtest 'console/journalctl';
