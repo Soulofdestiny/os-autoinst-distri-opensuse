@@ -928,9 +928,13 @@ sub load_inst_tests {
     # need to be able to do installations on it. The release notes
     # functionality needs to be covered by other backends
     # Skip release notes test on sle 15 if have addons
+<<<<<<< HEAD
     if (get_var('CHECK_RELEASENOTES') &&
         is_sle && !check_var('BACKEND', 'generalhw') && !check_var('BACKEND', 'ipmi') &&
         !(is_sle('15+') && get_var('ADDONURL'))) {
+=======
+    if (is_sle && !check_var('BACKEND', 'generalhw') && !check_var('BACKEND', 'ipmi') && !(is_sle('15+') && get_var('ADDONURL'))) {
+>>>>>>> Fix main_common.pm
         loadtest "installation/releasenotes";
     }
 
@@ -1550,10 +1554,13 @@ sub load_extra_tests_console {
     }
     # bind need source package and legacy and development module on SLE15+
     loadtest 'console/bind' if get_var('MAINT_TEST_REPO');
+<<<<<<< HEAD
     unless (is_sle('<12-SP3')) {
         loadtest 'x11/evolution/evolution_prepare_servers';
         loadtest 'console/mutt';
     }
+=======
+>>>>>>> Fix main_common.pm
     loadtest 'console/systemd_testsuite' if is_sle('15+') && get_var('QA_HEAD_REPO');
     loadtest 'console/mdadm' unless is_jeos;
     loadtest 'console/journalctl';
@@ -1576,6 +1583,7 @@ sub load_extra_tests_docker {
     if (is_opensuse) {
         loadtest "console/docker_compose";
     }
+<<<<<<< HEAD
 }
 
 sub load_extra_tests_prepare {
@@ -1585,6 +1593,8 @@ sub load_extra_tests_prepare {
     loadtest 'console/integration_services' if is_hyperv || is_vmware;
     loadtest "console/hostname";
     loadtest "console/zypper_ref" if (console_is_applicable and get_var('EXTRATEST') !~ /zypper/);
+=======
+>>>>>>> Fix main_common.pm
 }
 
 sub load_extra_tests {
@@ -1596,10 +1606,23 @@ sub load_extra_tests {
     # pre-conditions for extra tests ie. the tests are running based on preinstalled image
     return if get_var("INSTALLONLY") || get_var("DUALBOOT") || get_var("RESCUECD");
 
+<<<<<<< HEAD
     # Extra tests are too long, split the test into subtest according to the
     # EXTRATEST variable; old EXTRATEST=1 settings is equivalent to
     # EXTRATEST=prepare,zypper,console,opensuse,docker,kdump in textmode or
     # EXTRATEST=prepare,desktop in dektop tests
+=======
+    # setup $serialdev permission and so on
+    loadtest "console/prepare_test_data";
+    loadtest "console/consoletest_setup";
+    loadtest 'console/integration_services' if is_hyperv || is_vmware;
+    loadtest "console/hostname";
+    # Extra tests are too long, split the test into subtest according to the
+    # EXTRATEST variable; old EXTRATEST=1 settings is equivalent to
+    # EXTRATEST=zypper,console,opensuse,docker,kdump in textmode or
+    # EXTRATEST=desktop in dektop tests
+    loadtest "console/zypper_ref" if (console_is_applicable and get_var('EXTRATEST') !~ /zypper/);
+>>>>>>> Fix main_common.pm
     foreach my $test_name (split(/,/, get_var('EXTRATEST'))) {
         if (my $test_to_run = main_common->can("load_extra_tests_$test_name")) {
             $test_to_run->();
@@ -1997,6 +2020,7 @@ sub load_common_x11 {
         loadtest "x11/ibus/ibus_test_kr";
         loadtest "x11/ibus/ibus_clean";
     }
+<<<<<<< HEAD
 }
 
 sub load_applicationstests {
@@ -2007,6 +2031,8 @@ sub load_applicationstests {
         return 1;
     }
     return 0;
+=======
+>>>>>>> Fix main_common.pm
 }
 
 # The function name load_security_tests_* is to avoid confusing since
@@ -2404,9 +2430,15 @@ sub load_public_cloud_patterns_validation_tests {
 }
 
 sub load_transactional_role_tests {
+<<<<<<< HEAD
     loadtest 'transactional_system/filesystem_ro';
     loadtest 'transactional_system/transactional_update';
     loadtest 'transactional_system/rebootmgr';
+=======
+    loadtest 'caasp/filesystem_ro';
+    loadtest 'caasp/transactional_update';
+    loadtest 'caasp/rebootmgr';
+>>>>>>> Fix main_common.pm
 }
 
 1;
