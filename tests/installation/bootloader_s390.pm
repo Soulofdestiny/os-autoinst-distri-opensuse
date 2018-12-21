@@ -304,7 +304,8 @@ sub run {
     die join("\n", '#' x 67, $exception, '#' x 67) if $exception;
 
     # activate console so we can call wait_serial later
-    my $c = select_console('iucvconn', await_console => 0);
+    my $c = eval { select_console('iucvconn', await_console => 0); };
+    die "SSH Connection could not be established" unless $c;
 
     # format DASD before installation by default
     format_dasd if (check_var('FORMAT_DASD', 'pre_install'));
