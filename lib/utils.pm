@@ -671,6 +671,7 @@ sub addon_license {
     my ($addon)  = @_;
     my $uc_addon = uc $addon;                      # variable name is upper case
     my @tags     = ('import-untrusted-gpg-key');
+    set_var("BETA_$uc_addon") if get_var('BETA');
     push @tags, (get_var("BETA_$uc_addon") ? "addon-betawarning-$addon" : "addon-license-$addon");
   license: {
         do {
