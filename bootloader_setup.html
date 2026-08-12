@@ -16,6 +16,7 @@
     <ul>
       <li><a href="#add_custom_grub_entries">add_custom_grub_entries</a></li>
       <li><a href="#boot_grub_item">boot_grub_item</a></li>
+      <li><a href="#modify_grub_parameters_grub2_bls">modify_grub_parameters_grub2_bls</a></li>
       <li><a href="#get_linuxrc_boot_params">get_linuxrc_boot_params</a></li>
       <li><a href="#grep_grub_settings">grep_grub_settings</a></li>
       <li><a href="#grep_grub_cmdline_settings">grep_grub_cmdline_settings</a></li>
@@ -28,7 +29,6 @@
       <li><a href="#remove_grub_cmdline_settings">remove_grub_cmdline_settings</a></li>
       <li><a href="#remove_grub_xen_cmdline_settings">remove_grub_xen_cmdline_settings</a></li>
       <li><a href="#grub_mkconfig">grub_mkconfig</a></li>
-      <li><a href="#get_cmdline_var">get_cmdline_var</a></li>
       <li><a href="#parse_bootparams_in_serial">parse_bootparams_in_serial</a></li>
       <li><a href="#compare_bootparams">compare_bootparams</a></li>
       <li><a href="#create_encrypted_part">create_encrypted_part</a></li>
@@ -81,6 +81,12 @@ boot_grub_item(3);</code></pre>
 <p>Boot the default kernel recovery mode (selected in the &quot;Advanced options ...&quot;):</p>
 
 <pre><code>boot_grub_item(2, 2);</code></pre>
+
+<h2 id="modify_grub_parameters_grub2_bls">modify_grub_parameters_grub2_bls</h2>
+
+<pre><code>modify_grub_parameters_grub2_bls()</code></pre>
+
+<p>For grub2-bls bootloader, update /etc/kernel/cmdline contents by appending the desired custom kernel parameters taken in <code>GRUB_ARGS</code>, and call sdbootutil to update the grub entry for the currently running kernel, which persists through reboots.</p>
 
 <h2 id="get_linuxrc_boot_params">get_linuxrc_boot_params</h2>
 
@@ -154,12 +160,6 @@ boot_grub_item(3);</code></pre>
 grub_mkconfig($config);</code></pre>
 
 <p>Regenerate /boot/grub2/grub.cfg with grub2-mkconfig.</p>
-
-<h2 id="get_cmdline_var">get_cmdline_var</h2>
-
-<pre><code>get_cmdline_var();</code></pre>
-
-<p>Get default grub cmdline variable: GRUB_CMDLINE_LINUX for JeOS, GRUB_CMDLINE_LINUX_DEFAULT for the rest.</p>
 
 <h2 id="parse_bootparams_in_serial">parse_bootparams_in_serial</h2>
 

@@ -18,17 +18,18 @@
       <li><a href="#get_available_python_versions">get_available_python_versions</a></li>
       <li><a href="#get_python3_binary">get_python3_binary</a></li>
       <li><a href="#remove_installed_pythons">remove_installed_pythons</a></li>
+      <li><a href="#get_current_python_version">get_current_python_version</a></li>
     </ul>
   </li>
 </ul><h1>lib/python_version_utils.pm</h1>
 
 <h2 id="get_system_python_version">get_system_python_version</h2>
 
-<p>returns a string with the system&#39;s current default python version, for example &#39;python311&#39;</p>
+<p>returns a string with the system&#39;s current python versions, for example &#39;python3 python311&#39;</p>
 
 <h2 id="get_available_python_versions">get_available_python_versions</h2>
 
-<p>returns an array of strings with all the available python versions in the repository</p>
+<p>returns an array of strings with all the available python versions in the repository, we can get the latest version with parameter defined</p>
 
 <h2 id="get_python3_binary">get_python3_binary</h2>
 
@@ -37,6 +38,10 @@
 <h2 id="remove_installed_pythons">remove_installed_pythons</h2>
 
 <p>remove all the installed available python versions</p>
+
+<h2 id="get_current_python_version">get_current_python_version</h2>
+
+<p>returns python3 version as example: &quot;313&quot; for Python 3.13.0 &quot;39&quot; for Python 3.9.18</p>
 
 
 </body>
